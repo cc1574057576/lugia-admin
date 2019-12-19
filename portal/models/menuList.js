@@ -48,6 +48,15 @@ const Menulist = lugiax.register({
       },
       onTabAdd(state, inKey) {
         return state.set("activityValue", inKey);
+      },
+      onTabDelete(state, data, { mutations }) {
+        const hasActivityKeyDefaultData = state.get("hasActivityKeyDefaultData").toJS
+          ? state.get("hasActivityKeyDefaultData").toJS()
+          : state.get("hasActivityKeyDefaultData");
+        const activekey = hasActivityKeyDefaultData.toJS ? hasActivityKeyDefaultData.toJS().length - 2 : hasActivityKeyDefaultData.length - 2;
+
+        let deleteData = mutations.onTabAdd(activekey);
+        return deleteData.set("hasActivityKeyDefaultData", data);
       }
     }
   }

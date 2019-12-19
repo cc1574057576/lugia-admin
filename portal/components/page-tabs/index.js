@@ -10,7 +10,6 @@ import { Theme, Tabs } from '@lugia/lugia-web';
 import Widget from "@lugia/lugia-web/dist/consts/index";
 import menuList from "../../models/menuList";
 import { connect } from "@lugia/lugiax";
-// import menulist from '../menulist';
 
 export const hasActivityKeyDefaultData = [
   {
@@ -23,18 +22,37 @@ export const hasActivityKeyDefaultData = [
 class PageTabs extends React.Component<any, any> {
   constructor(props) {
     super(props);
-    this.state = { date: new Date() };
+    this.state = {
+      width: 900
+    };
   }
+
+  componentWillMount() {
+    const viewWidth = this.getWindowWidth() - 210; // 210为导航栏的宽度
+    this.setState({
+      width: viewWidth
+    });
+    window.onresize = () => {
+      const viewWidth = this.getWindowWidth() - 210;
+      this.setState({
+        width: viewWidth
+      });
+    };
+  }
+  getWindowWidth = () => {
+    return document.body.clientWidth;
+  };
+
   onDeleteClick = (activityKey: string) => {
-    console.log('activityKey', activityKey)
-    // const { data } = this.state;
-    // let newdata = [];
-    // if (data.length > 1) {
-    //   newdata = data.filter(child => {
-    //     return child.activityKey !== activityKey;
-    //   });
-    // }
-    // this.setState({ data: newdata });
+
+    const data = this.props.hasActivityKeyDefaultData;
+    let newdata = [];
+    if (data.length > 1) {
+      newdata = data.filter(child => {
+        return child.key !== activityKey.activityValue;
+      });
+    }
+    this.props.onTabDelete(newdata);
   };
   tabsClick = (clickKey) => {
     const { activityValue } = clickKey;
@@ -42,11 +60,17 @@ class PageTabs extends React.Component<any, any> {
   }
 
   render() {
+    const { width } = this.state;
     const view = {
       [Widget.Tabs]: {
         TitleContainer: {
           normal: {
-            width: 1300
+            width
+          },
+        },
+        ContentBlock: {
+          normal: {
+            width
           },
         },
         Container: {
@@ -98,7 +122,8 @@ const MenuList = connect(
     const menuList = mutations;
     return {
       onSelect: menuList.onSelect,
-      onTabAdd: menuList.onTabAdd
+      onTabAdd: menuList.onTabAdd,
+      onTabDelete: menuList.onTabDelete,
     };
   }
 )(PageTabs);

@@ -2,6 +2,7 @@ import React from "react";
 import { createRoute } from "@lugia/lugiax-router";
 import Header from "../components/header";
 import MenuList from "../components/menulist";
+import Tabs from "../components/page-tabs";
 import "../App.css";
 import styled from "styled-components";
 import router from "../router";
@@ -29,7 +30,10 @@ export default () => {
       <MenuList />
       <ContentContainer>
         <Header />
-        <Content>{createRoute(router)}</Content>
+        <Content>
+          <Tabs />
+          {/* {createRoute(router)} */}
+        </Content>
       </ContentContainer>
     </div>
   );

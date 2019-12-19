@@ -6,25 +6,51 @@
  */
 import lugiax from "@lugia/lugiax";
 import React from "react";
-import { go, Link } from "@lugia/lugiax-router";
 
 const model = "menuList";
 const state = {
   menuState: {
     value: null
-  }
+  },
+  hasActivityKeyDefaultData: [
+    {
+      title: '首页',
+      content: <div>首页</div>,
+      key: '0'
+    }
+  ],
+  activityValue: '0'
 };
 
-export default lugiax.register({
+const Menulist = lugiax.register({
   model,
   state,
   mutations: {
     sync: {
-      onSelect(state, inParam) {
+      onSelect(state, inParam, { mutations }) {
         const { value } = inParam;
-        go({ url: value });
-        return state.setIn(["menuState", "value"], value);
+        const hasActivityKeyDefaultData = state.get("hasActivityKeyDefaultData").toJS
+          ? state.get("hasActivityKeyDefaultData").toJS()
+          : state.get("hasActivityKeyDefaultData");
+
+        const activekey = hasActivityKeyDefaultData.toJS ? hasActivityKeyDefaultData.toJS().length : hasActivityKeyDefaultData.length
+        const item = {
+          title: inParam.text,
+          content: `${value}`,
+          key: activekey
+        }
+
+        hasActivityKeyDefaultData.push(item);
+
+        let stateValue = mutations.onTabAdd(activekey);
+
+        return stateValue.set("hasActivityKeyDefaultData", hasActivityKeyDefaultData);
+      },
+      onTabAdd(state, inKey) {
+        return state.set("activityValue", inKey);
       }
     }
   }
 });
+
+export default Menulist;

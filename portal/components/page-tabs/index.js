@@ -15,7 +15,8 @@ export const hasActivityKeyDefaultData = [
   {
     title: '首页',
     content: <div>首页</div>,
-    activityKey: '0'
+    activityKey: '0',
+    hideCloseBtn: true
   },
 ];
 

@@ -16,7 +16,8 @@ const state = {
     {
       title: '首页',
       content: <div>首页</div>,
-      key: '0'
+      key: '0',
+      hideCloseBtn: true
     }
   ],
   activityValue: '0'

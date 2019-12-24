@@ -5,7 +5,7 @@
  * @flow
  */
 import lugiax from "@lugia/lugiax";
-import React from "react";
+import { go } from "@lugia/lugiax-router";
 
 const model = "menuList";
 const state = {
@@ -15,12 +15,12 @@ const state = {
   hasActivityKeyDefaultData: [
     {
       title: '首页',
-      content: <div>首页</div>,
-      key: '0',
+      router: '/dashboard/analyse',
+      key: 0,
       hideCloseBtn: true
     }
   ],
-  activityValue: '0'
+  activityValue: 0
 };
 
 const Menulist = lugiax.register({
@@ -30,14 +30,16 @@ const Menulist = lugiax.register({
     sync: {
       onSelect(state, inParam, { mutations }) {
         const { value } = inParam;
+
         const hasActivityKeyDefaultData = state.get("hasActivityKeyDefaultData").toJS
           ? state.get("hasActivityKeyDefaultData").toJS()
           : state.get("hasActivityKeyDefaultData");
 
         const activekey = hasActivityKeyDefaultData.toJS ? hasActivityKeyDefaultData.toJS().length : hasActivityKeyDefaultData.length
+
         const item = {
           title: inParam.text,
-          content: `${value}`,
+          router: `${value}`,
           key: activekey
         }
 
@@ -45,18 +47,24 @@ const Menulist = lugiax.register({
 
         let stateValue = mutations.onTabAdd(activekey);
 
+        go({ url: value });
+
         return stateValue.set("hasActivityKeyDefaultData", hasActivityKeyDefaultData);
       },
       onTabAdd(state, inKey) {
-        return state.set("activityValue", inKey);
-      },
-      onTabDelete(state, data, { mutations }) {
         const hasActivityKeyDefaultData = state.get("hasActivityKeyDefaultData").toJS
           ? state.get("hasActivityKeyDefaultData").toJS()
           : state.get("hasActivityKeyDefaultData");
-        const activekey = hasActivityKeyDefaultData.toJS ? hasActivityKeyDefaultData.toJS().length - 2 : hasActivityKeyDefaultData.length - 2;
 
-        let deleteData = mutations.onTabAdd(activekey);
+        if (hasActivityKeyDefaultData[inKey]) {
+          let value = hasActivityKeyDefaultData[inKey].router;
+          go({ url: value });
+
+        }
+        return state.set("activityValue", inKey);
+      },
+      onTabDelete(state, data, { mutations }) {
+        let deleteData = mutations.onTabAdd(data.activityKey - 1);
         return deleteData.set("hasActivityKeyDefaultData", data);
       }
     }

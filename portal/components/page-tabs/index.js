@@ -14,8 +14,8 @@ import { connect } from "@lugia/lugiax";
 export const hasActivityKeyDefaultData = [
   {
     title: '首页',
-    content: <div>首页</div>,
-    activityKey: '0',
+    router: '/dashboard/analyse',
+    activityKey: 0,
     hideCloseBtn: true
   },
 ];
@@ -45,7 +45,6 @@ class PageTabs extends React.Component<any, any> {
   };
 
   onDeleteClick = (activityKey: string) => {
-
     const data = this.props.hasActivityKeyDefaultData;
     let newdata = [];
     if (data.length > 1) {
@@ -53,6 +52,7 @@ class PageTabs extends React.Component<any, any> {
         return child.key !== activityKey.activityValue;
       });
     }
+    newdata.activityKey = activityKey.activityValue
     this.props.onTabDelete(newdata);
   };
   tabsClick = (clickKey) => {
@@ -66,20 +66,8 @@ class PageTabs extends React.Component<any, any> {
       [Widget.Tabs]: {
         TitleContainer: {
           normal: {
-            width
-          },
-        },
-        ContentBlock: {
-          normal: {
-            width
-          },
-        },
-        Container: {
-          normal: {
-            width: "100%",
-            background: {
-              color: "#000"
-            }
+            width,
+            height: 32
           },
         }
       },
@@ -90,6 +78,7 @@ class PageTabs extends React.Component<any, any> {
           <Tabs
             tabType={'card'}
             pagedType={'single'}
+            hideContent={true}
             onDelete={this.onDeleteClick}
             onTabClick={this.tabsClick}
             activityValue={this.props.activityValue}
@@ -97,7 +86,6 @@ class PageTabs extends React.Component<any, any> {
             showDeleteBtn={true}
           />
         </Theme>
-
       </div>
     );
   }

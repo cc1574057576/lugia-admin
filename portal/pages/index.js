@@ -30,9 +30,9 @@ export default () => {
       <MenuList />
       <ContentContainer>
         <Header />
+        <Tabs />
         <Content>
-          <Tabs />
-          {/* {createRoute(router)} */}
+          {createRoute(router)}
         </Content>
       </ContentContainer>
     </div>

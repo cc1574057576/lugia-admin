@@ -11,15 +11,6 @@ import Widget from "@lugia/lugia-web/dist/consts/index";
 import menuList from "../../models/menuList";
 import { connect } from "@lugia/lugiax";
 
-export const hasActivityKeyDefaultData = [
-  {
-    title: '首页',
-    router: '/dashboard/analyse',
-    activityKey: 0,
-    hideCloseBtn: true
-  },
-];
-
 class PageTabs extends React.Component<any, any> {
   constructor(props) {
     super(props);
@@ -44,23 +35,44 @@ class PageTabs extends React.Component<any, any> {
     return document.body.clientWidth;
   };
 
-  onDeleteClick = (activityKey: string) => {
+  onDeleteClick = (activityKey) => {
     const data = this.props.hasActivityKeyDefaultData;
     let newdata = [];
     if (data.length > 1) {
       newdata = data.filter(child => {
-        return child.key !== activityKey.activityValue;
+
+        console.log('onDeleteClick222');
+        console.log(activityKey);
+        console.log(activityKey.activityValue);
+        console.log(child)
+        console.log('onDeleteClick222');
+        return child.activityKey !== activityKey.activityValue;
       });
     }
+
     newdata.activityKey = activityKey.activityValue
+    console.log('onDeleteClick333');
+    console.log(newdata);
+    console.log(newdata.activityKey);
+    console.log('onDeleteClick333');
     this.props.onTabDelete(newdata);
   };
-  tabsClick = (clickKey) => {
-    const { activityValue } = clickKey;
-    this.props.onTabAdd(activityValue)
+  tabsClick = (clickData) => {
+    const { newItem } = clickData;
+    // console.log("tabsClick");
+    // console.log(clickData);
+    // console.log(newItem.router);
+    // console.log(clickData.activityKey);
+    // console.log("tabsClick");
+    let tabsClickData = [newItem.router, clickData.activityValue]
+    tabsClickData.click = "click"
+    this.props.onTabChange(tabsClickData)
   }
 
   render() {
+    // console.log("pageTabsRender");
+    // console.log(this.props.activityValue);
+    // console.log("pageTabsRender");
     const { width } = this.state;
     const view = {
       [Widget.Tabs]: {
@@ -111,7 +123,7 @@ const MenuList = connect(
     const menuList = mutations;
     return {
       onSelect: menuList.onSelect,
-      onTabAdd: menuList.onTabAdd,
+      onTabChange: menuList.onTabChange,
       onTabDelete: menuList.onTabDelete,
     };
   }

@@ -169,6 +169,13 @@ const getRouteDataInfo = () => {
       text: "移动板块",
       icon: "lugia-icon-logo_windows_o",
       render: () => import("../portal/pages/mobilePanel/mobilePanel")
+    },
+    {
+      id: "9",
+      value: "/baidu/iframe",
+      text: "百度",
+      icon: "lugia-icon-logo_windows_o",
+      render: () => import("../portal/pages/baidu/iframe")
     }
   ];
 
@@ -176,7 +183,7 @@ const getRouteDataInfo = () => {
 };
 
 const getUserAccessIdsAndApiUrlsInfo = () => {
-  const accessIds = ["1", "2", "4","5","6","7","8"];
+  const accessIds = ["1", "2", "4", "5", "6", "7", "8", "9"];
   const apiUrls = [];
   return {
     accessIds,
@@ -185,10 +192,10 @@ const getUserAccessIdsAndApiUrlsInfo = () => {
 };
 
 export default {
-  "POST /api/routeMock": function(req, res) {
+  "POST /api/routeMock": function (req, res) {
     res.json(getRouteDataInfo());
   },
-  "POST /api/userAccessIdsAndApiUrls": function(req, res) {
+  "POST /api/userAccessIdsAndApiUrls": function (req, res) {
     res.json(getUserAccessIdsAndApiUrlsInfo());
   }
 };

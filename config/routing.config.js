@@ -164,11 +164,17 @@ export default [
     text: "移动板块",
     icon: "lugia-icon-logo_windows_o",
     render: () => import("../portal/pages/mobilePanel/mobilePanel")
-  }
+  },
   // {
   //   value: "/user",
   //   text: "用户管理",
   //   icon: "lugia-icon-financial_user",
   //   render: () => import("../portal/pages/user")
   // },
+  {
+    value: "/baidu/iframe",
+    text: "百度",
+    icon: "lugia-icon-financial_user",
+    render: () => import("../portal/pages/baidu/iframe")
+  },
 ];
